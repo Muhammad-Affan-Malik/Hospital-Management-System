@@ -44,6 +44,7 @@ class Program
         if (!int.TryParse(Console.ReadLine(), out int age))
         {
             Console.WriteLine("❌ Invalid age.");
+            Log.Warning("Invalid age entered while adding a patient.");
             return;
         }
 
@@ -57,6 +58,7 @@ class Program
         if (!DateTime.TryParse(Console.ReadLine(), out DateTime admissionDate))
         {
             Console.WriteLine("❌ Invalid date format.");
+            Log.Warning("Invalid admission date format entered while adding a patient.");
             return;
         }
 
@@ -69,30 +71,39 @@ class Program
             AdmissionDate = admissionDate
         };
 
-        using (var db = new HospitalContext())
+        try
         {
-            db.Patients.Add(patient);
-            db.SaveChanges();
-        }
-        Log.ForContext("Patient", patient, destructureObjects: true)
-        .Information("Patient added successfully.");
+            using (var db = new HospitalContext())
+            {
+                db.Patients.Add(patient);
+                db.SaveChanges();
+            }
 
-        Console.WriteLine("✅ Patient added successfully!");
+            Console.WriteLine("✅ Patient added successfully!");
+            Log.Information("Patient \"{Name}\" (ID {Id}) added by Admin. Happiness +100. 🎉",
+                            patient.Name, patient.PatientId);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("❌ Failed to add patient. Please try again.");
+            Log.Error(ex, "Exception occurred while adding patient \"{Name}\".", patient.Name);
+        }
     }
+
 
 
     static void ViewAllPatients()
     {
         using (var context = new HospitalContext())
         {
-            var patients = context.Patients.ToList();
-
             Log.Information("Viewing all patients");
+
+            var patients = context.Patients.ToList();
 
             if (patients.Count == 0)
             {
                 Console.WriteLine("❗ No patient records found.");
-                Log.Warning("No patient records found in the database.");
+                Log.Warning("No patient records found in the database. 🕵️‍♂️🔍");
                 return;
             }
 
@@ -101,8 +112,10 @@ class Program
             {
                 Console.WriteLine($"🧾 ID: {patient.PatientId}, Name: {patient.Name}, Age: {patient.Age}, Gender: {patient.Gender}, Disease: {patient.Disease}");
             }
+
+            Log.Information("Displayed {Count} patient records. 📊", patients.Count);
             Log.ForContext("Patients", patients, destructureObjects: true)
-           .Information("Displayed {Count} patient records.", patients.Count);
+               .Information("👀 Successfully retrieved all patient data.");
         }
     }
 
@@ -116,7 +129,7 @@ class Program
         if (!int.TryParse(Console.ReadLine(), out int patientId))
         {
             Console.WriteLine("❌ Invalid ID entered.");
-            Log.Error("Tried to update with an invalid patient ID. *sad trombone*");
+            Log.Error("🚫 Invalid patient ID entered for update attempt.");
             return;
         }
 
@@ -127,9 +140,11 @@ class Program
             if (patient == null)
             {
                 Console.WriteLine("❌ Patient not found.");
-                Log.Error("Tried to update patient with ID {PatientId}, but they were not found. *sad trombone*", patientId);
+                Log.Error("❓ Tried to update patient with ID {PatientId}, but no record was found. *sad trombone*", patientId);
                 return;
             }
+
+            Log.Information("✏️ Editing patient record for \"{OldName}\" (ID {PatientId})", patient.Name, patientId);
 
             string oldName = patient.Name;
 
@@ -161,10 +176,10 @@ class Program
             db.SaveChanges();
 
             Console.WriteLine("✅ Patient updated successfully.");
-            Log.Information("Patient \"{OldName}\" (ID {PatientId}) updated by Admin. Data refreshed. 🎉", oldName, patientId);
+            Log.ForContext("UpdatedPatient", patient, destructureObjects: true)
+               .Information("✅ Patient \"{OldName}\" (ID {PatientId}) updated successfully by Admin. 🎉", oldName, patientId);
         }
     }
-
 
 
     static void DeletePatient()
@@ -176,8 +191,7 @@ class Program
         if (!int.TryParse(Console.ReadLine(), out int patientId))
         {
             Console.WriteLine("❌ Invalid ID entered.");
-
-            Log.Warning("Patient with ID {PatientId} not found for deletion.");
+            Log.Error("🚫 Invalid patient ID entered for deletion attempt.");
             return;
         }
 
@@ -186,26 +200,28 @@ class Program
         if (confirm != "y")
         {
             Console.WriteLine("❎ Deletion cancelled.");
+            Log.Warning("⚠️ Deletion of patient ID {PatientId} cancelled by user.", patientId);
             return;
         }
 
         using (var db = new HospitalContext())
         {
-            Log.Information("Deleting patient ID: {PatientId}", patientId);
+            Log.Information("Attempting to delete patient with ID: {PatientId}", patientId);
 
             var patient = db.Patients.FirstOrDefault(p => p.PatientId == patientId);
             if (patient == null)
             {
                 Console.WriteLine("❌ Patient not found.");
+                Log.Error("❓ Tried to delete patient with ID {PatientId}, but no record was found. *sad trombone*", patientId);
                 return;
             }
 
             db.Patients.Remove(patient);
             db.SaveChanges();
-            Console.WriteLine("✅ Patient deleted successfully.");
-            Log.ForContext("PatientId", patientId)
-                .Information("Patient deleted successfully.");
 
+            Console.WriteLine("✅ Patient deleted successfully.");
+            Log.ForContext("DeletedPatient", patient, destructureObjects: true)
+               .Information("🗑️ Patient \"{Name}\" (ID {PatientId}) deleted by Admin. Goodbye and good luck. 🌈", patient.Name, patientId);
         }
     }
 
@@ -213,8 +229,6 @@ class Program
     static void SearchPatient()
     {
         Console.Clear();
-
-
         Console.WriteLine("🔍 Search Patient");
 
         Console.Write("Enter patient name or part of name to search: ");
@@ -222,40 +236,35 @@ class Program
 
         if (string.IsNullOrWhiteSpace(searchTerm))
         {
-
             Console.WriteLine("❌ Search term cannot be empty.");
-            Log.Warning("Search aborted: empty input.");
+            Log.Warning("🚫 Search aborted: empty input provided by user.");
             return;
         }
 
         using (var db = new HospitalContext())
         {
-            Log.Information("Search initiated with term: {SearchTerm}", searchTerm);
-            
+            Log.Information("🔍 Search initiated for term: \"{SearchTerm}\"", searchTerm);
 
             var matchingPatients = db.Patients
                 .Where(p => p.Name.ToLower().Contains(searchTerm))
                 .ToList();
 
-            Log.Information("Searching for patients with term: {SearchTerm}", searchTerm);
-
             if (matchingPatients.Count == 0)
             {
                 Console.WriteLine("❌ No patients found matching your search.");
-
-                Log.Warning("No patients found matching search term: {SearchTerm}", searchTerm);
+                Log.Warning("🔎 No patients found for search term: \"{SearchTerm}\"", searchTerm);
             }
             else
             {
                 Console.WriteLine($"✅ Found {matchingPatients.Count} patient(s):");
 
-                Log.ForContext("SearchResults", matchingPatients, destructureObjects: true)
-               .Information("Search returned {Count} results for term: {SearchTerm}", matchingPatients.Count, searchTerm);
-
                 foreach (var patient in matchingPatients)
                 {
-                    Console.WriteLine($"ID: {patient.PatientId}, Name: {patient.Name}, Age: {patient.Age}, Gender: {patient.Gender}, Disease: {patient.Disease}, Admission Date: {patient.AdmissionDate.ToShortDateString()}");
+                    Console.WriteLine($"🧾 ID: {patient.PatientId}, Name: {patient.Name}, Age: {patient.Age}, Gender: {patient.Gender}, Disease: {patient.Disease}, Admission Date: {patient.AdmissionDate.ToShortDateString()}");
                 }
+
+                Log.ForContext("SearchResults", matchingPatients, destructureObjects: true)
+                    .Information("📄 Search completed: {Count} patient(s) matched term \"{SearchTerm}\"", matchingPatients.Count, searchTerm);
             }
         }
     }
