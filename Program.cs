@@ -274,6 +274,120 @@ class Program
     }
 
 
+
+    static void ExportPatientsToJson()
+    {
+        Console.Clear();
+        Console.WriteLine("💾 Exporting Patients Data to JSON File...");
+
+        try
+        {
+            using (var db = new HospitalContext())
+            {
+                var patients = db.Patients.ToList();
+
+                if (patients.Count == 0)
+                {
+                    Console.WriteLine("❗ No patients found to export.");
+                    Log.Warning("No patient data found. Export aborted.");
+                    return;
+                }
+
+                string backupDirectory = "backup";
+
+                // Ensure the directory exists
+                if (!Directory.Exists(backupDirectory))
+                    Directory.CreateDirectory(backupDirectory);
+
+                string fileName = $"patients_{DateTime.Now:yyyyMMdd_HHmmss}.json";
+                string fullPath = Path.Combine(backupDirectory, fileName);
+
+                var options = new JsonSerializerOptions
+                {
+                    WriteIndented = true // Makes JSON easy to read
+                };
+
+                string json = JsonSerializer.Serialize(patients, options);
+                File.WriteAllText(fullPath, json);
+
+                Console.WriteLine($"✅ Data exported successfully to {fullPath}");
+                Log.Information("Exported {Count} patients to JSON file: {FilePath}", patients.Count, fullPath);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("❌ Error exporting data. See logs for details.");
+            Log.Error(ex, "Failed to export patients to JSON file.");
+        }
+    }
+
+
+    static void ImportPatientsFromJson()
+    {
+        Console.Clear();
+        Console.WriteLine("📂 Import Patients Data from JSON File");
+
+        Console.Write("Enter the JSON filename (inside 'backup' folder): ");
+        string fileName = Console.ReadLine();
+
+        string backupDirectory = "backup";
+        string fullPath = Path.Combine(backupDirectory, fileName);
+
+        if (!File.Exists(fullPath))
+        {
+            Console.WriteLine("❌ File not found.");
+            Log.Warning("Import failed. File not found: {FilePath}", fullPath);
+            return;
+        }
+
+        try
+        {
+            string json = File.ReadAllText(fullPath);
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            var importedPatients = JsonSerializer.Deserialize<List<Patient>>(json, options);
+
+            if (importedPatients == null || importedPatients.Count == 0)
+            {
+                Console.WriteLine("❗ No patient records found in the file.");
+                Log.Warning("Import aborted. No valid patient data found in: {FilePath}", fullPath);
+                return;
+            }
+
+            using (var db = new HospitalContext())
+            {
+                foreach (var patient in importedPatients)
+                {
+                    // Avoid duplicating based on unique constraints (optional logic)
+                    bool exists = db.Patients.Any(p =>
+                        p.Name == patient.Name &&
+                        p.Age == patient.Age &&
+                        p.Gender == patient.Gender &&
+                        p.Disease == patient.Disease &&
+                        p.AdmissionDate == patient.AdmissionDate);
+
+                    if (!exists)
+                    {
+                        db.Patients.Add(patient);
+                    }
+                }
+
+                db.SaveChanges();
+            }
+
+            Console.WriteLine($"✅ Successfully imported {importedPatients.Count} patients from file.");
+            Log.Information("Imported {Count} patients from JSON file: {FilePath}", importedPatients.Count, fullPath);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("❌ Error occurred while importing.");
+            Log.Error(ex, "Failed to import patients from JSON file: {FilePath}", fullPath);
+        }
+    }
+
     static void Main(string[] args)
     {
 
@@ -293,7 +407,10 @@ class Program
                 Console.WriteLine("3. Update Patient");
                 Console.WriteLine("4. Delete Patient");
                 Console.WriteLine("5. Search Patient");
-                Console.WriteLine("6. Exit");
+                Console.WriteLine("6. Export Patients to JSON");
+                Console.WriteLine("7. Import Patients from JSON");
+
+                Console.WriteLine("8. Exit");
                 Console.Write("Select an option: ");
                 string choice = Console.ReadLine();
                 switch (choice)
@@ -314,6 +431,12 @@ class Program
                         SearchPatient();
                         break;
                     case "6":
+                        ExportPatientsToJson();
+                        break;
+                    case "7":
+                        ImportPatientsFromJson();
+                        break;
+                    case "8":
                         Log.Information("Application exited by user.");
                         return;
                     default:
