@@ -11,6 +11,15 @@ public class HumanReadableLogFormatter : ITextFormatter
         var level = logEvent.Level.ToString().ToUpper();
         var message = logEvent.RenderMessage();
 
-        output.WriteLine($"[{date}] {level}: {message}");
+        output.WriteLine($"[{date}] {level}: {message} {GetEmoji(level)}");
+
+        string GetEmoji(string level) => level switch
+        {
+            "ERROR" => "💥",
+            "WARNING" => "⚠️",
+            "INFORMATION" => "ℹ️",
+            "DEBUG" => "🐞",
+            _ => ""
+        };
     }
 }
