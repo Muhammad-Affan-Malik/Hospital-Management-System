@@ -18,6 +18,7 @@ class Program
             .SetBasePath(AppContext.BaseDirectory)
             .AddJsonFile("appsettings.json");
 
+        
         config = builder.Build();
 
     }
