@@ -5,6 +5,7 @@ using PracticeProject1;
 using Serilog;
 
 
+
 class Program
 {
 
@@ -115,21 +116,22 @@ class Program
         if (!int.TryParse(Console.ReadLine(), out int patientId))
         {
             Console.WriteLine("❌ Invalid ID entered.");
+            Log.Error("Tried to update with an invalid patient ID. *sad trombone*");
             return;
         }
 
         using (var db = new HospitalContext())
         {
-            Log.Information("Updating patient with ID {PatientId}", patientId);
-
             var patient = db.Patients.FirstOrDefault(p => p.PatientId == patientId);
 
             if (patient == null)
             {
                 Console.WriteLine("❌ Patient not found.");
-                Log.Warning("Patient with ID {PatientId} not found for update.", patientId);
+                Log.Error("Tried to update patient with ID {PatientId}, but they were not found. *sad trombone*", patientId);
                 return;
             }
+
+            string oldName = patient.Name;
 
             Console.Write($"Enter New Name (current: {patient.Name}): ");
             string name = Console.ReadLine();
@@ -157,12 +159,12 @@ class Program
                 patient.AdmissionDate = admissionDate;
 
             db.SaveChanges();
-            Console.WriteLine("✅ Patient updated successfully.");
-            Log.ForContext("Patient", patient, destructureObjects: true)
-                .Information("Patient updated successfully.");
 
+            Console.WriteLine("✅ Patient updated successfully.");
+            Log.Information("Patient \"{OldName}\" (ID {PatientId}) updated by Admin. Data refreshed. 🎉", oldName, patientId);
         }
     }
+
 
 
     static void DeletePatient()
@@ -263,6 +265,8 @@ class Program
     {
 
         LoggerConfig.Configure();
+        Log.Information("🚀 Test log at app startup");
+
 
         try
         {   
