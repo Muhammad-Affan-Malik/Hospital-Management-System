@@ -388,6 +388,23 @@ class Program
         }
     }
 
+    static void LaunchWinFormUI()
+    {
+        Thread formThread = new Thread(() =>
+        {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new HMSForm()); // ✅ Replace with your form's class name
+        });
+
+        formThread.SetApartmentState(ApartmentState.STA); // 🧠 Important for WinForms
+        formThread.Start();
+
+        Log.Information("🪟 WinForm launched from console.");
+        Console.WriteLine("✅ WinForm launched in a new window.");
+    }
+
+
     static void Main(string[] args)
     {
 
@@ -409,8 +426,8 @@ class Program
                 Console.WriteLine("5. Search Patient");
                 Console.WriteLine("6. Export Patients to JSON");
                 Console.WriteLine("7. Import Patients from JSON");
-
-                Console.WriteLine("8. Exit");
+                Console.WriteLine("8. Launch WinForms UI");
+                Console.WriteLine("9. Exit");
                 Console.Write("Select an option: ");
                 string choice = Console.ReadLine();
                 switch (choice)
@@ -437,6 +454,9 @@ class Program
                         ImportPatientsFromJson();
                         break;
                     case "8":
+                        LaunchWinFormUI(); 
+                        break;
+                    case "9":
                         Log.Information("Application exited by user.");
                         return;
                     default:
