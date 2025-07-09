@@ -35,6 +35,9 @@
             txtDisease = new TextBox();
             dateTimePicker = new DateTimePicker();
             btnAdd = new Button();
+            
+
+            this.Controls.AddRange(new Control[] { dataGridView1, txtName, txtAge, BoxGender, txtDisease, dateTimePicker, btnAdd });
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -97,6 +100,7 @@
             btnAdd.TabIndex = 6;
             btnAdd.Text = "ADD PATIENT";
             btnAdd.UseVisualStyleBackColor = false;
+            btnAdd.Click += btnAdd_Click;
             // 
             // HMSForm
             // 

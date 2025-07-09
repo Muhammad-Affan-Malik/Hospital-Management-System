@@ -41,5 +41,32 @@ namespace PracticeProject1
         {
 
         }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var newPatient = new Patient
+                {
+                    Name = txtName.Text,
+                    Age = int.Parse(txtAge.Text),
+                    Gender = BoxGender.SelectedItem?.ToString() ?? "Unspecified",
+                    Disease = txtDisease.Text,
+                    AdmissionDate = dateTimePicker.Value.Date,
+                };
+
+                _context.Patients.Add(newPatient);
+                _context.SaveChanges();
+
+                MessageBox.Show("✅ Patient added successfully!");
+                LoadPatientsIntoGrid(); // Refresh grid
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"❌ Failed to add patient: {ex.Message}");
+            }
+        }
+
+
     }
 }
