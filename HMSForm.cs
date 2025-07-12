@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.EntityFrameworkCore;
@@ -160,6 +161,73 @@ namespace PracticeProject1
             {
                 MessageBox.Show("Selected patient not found in database.");
             }
+        }
+
+        private void btnExportJson_Click(object sender, EventArgs e)
+        {
+            var patients = _context.Patients.ToList();
+
+            if (patients.Count == 0)
+            {
+                MessageBox.Show("No patient data to export.");
+                return;
+            }
+
+            string json = JsonSerializer.Serialize(patients, new JsonSerializerOptions { WriteIndented = true });
+            string folderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "backup");
+
+            if (!Directory.Exists(folderPath))
+                Directory.CreateDirectory(folderPath);
+
+            string filePath = Path.Combine(folderPath, "patients_backup.json");
+            File.WriteAllText(filePath, json);
+
+            MessageBox.Show($"Patient data exported successfully to:\n{filePath}");
+        }
+
+        private void btnImportJson_Click(object sender, EventArgs e)
+        {
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "backup", "patients_backup.json");
+
+            if (!File.Exists(filePath))
+            {
+                MessageBox.Show("Backup file not found.");
+                return;
+            }
+
+            string json = File.ReadAllText(filePath);
+            var importedPatients = JsonSerializer.Deserialize<List<Patient>>(json);
+
+            if (importedPatients == null || importedPatients.Count == 0)
+            {
+                MessageBox.Show("No data found in the backup file.");
+                return;
+            }
+
+            int addedCount = 0;
+            foreach (var patient in importedPatients)
+            {
+                // Ignore the original ID and let DB generate a new one
+                patient.PatientId = 0;
+
+                bool exists = _context.Patients.Any(p =>
+                    p.Name == patient.Name &&
+                    p.Age == patient.Age &&
+                    p.Gender == patient.Gender &&
+                    p.Disease == patient.Disease &&
+                    p.AdmissionDate == patient.AdmissionDate);
+
+                if (!exists)
+                {
+                    _context.Patients.Add(patient);
+                    addedCount++;
+                }
+            }
+
+            _context.SaveChanges();
+            LoadPatientsIntoGrid();
+
+            MessageBox.Show($"{addedCount} patients imported successfully.");
         }
     }
 }

@@ -41,22 +41,24 @@
             txtSearch = new TextBox();
             SearchLabel = new Label();
             btnDelete = new Button();
+            btnExportJson = new Button();
+            btnImportJson = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
             // dataGridView1
             // 
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(270, 338);
+            dataGridView1.Location = new Point(181, 42);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(721, 188);
+            dataGridView1.Size = new Size(787, 188);
             dataGridView1.TabIndex = 0;
             dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             // 
             // txtName
             // 
-            txtName.Location = new Point(309, 55);
+            txtName.Location = new Point(268, 299);
             txtName.Name = "txtName";
             txtName.Size = new Size(250, 27);
             txtName.TabIndex = 1;
@@ -64,7 +66,7 @@
             // 
             // txtAge
             // 
-            txtAge.Location = new Point(309, 99);
+            txtAge.Location = new Point(268, 343);
             txtAge.Name = "txtAge";
             txtAge.Size = new Size(250, 27);
             txtAge.TabIndex = 2;
@@ -75,14 +77,14 @@
             BoxGender.DropDownStyle = ComboBoxStyle.DropDownList;
             BoxGender.FormattingEnabled = true;
             BoxGender.Items.AddRange(new object[] { "Male", "Female", "Others" });
-            BoxGender.Location = new Point(309, 148);
+            BoxGender.Location = new Point(268, 392);
             BoxGender.Name = "BoxGender";
             BoxGender.Size = new Size(151, 28);
             BoxGender.TabIndex = 3;
             // 
             // txtDisease
             // 
-            txtDisease.Location = new Point(309, 193);
+            txtDisease.Location = new Point(556, 299);
             txtDisease.Name = "txtDisease";
             txtDisease.Size = new Size(250, 27);
             txtDisease.TabIndex = 4;
@@ -90,7 +92,7 @@
             // 
             // dateTimePicker
             // 
-            dateTimePicker.Location = new Point(309, 240);
+            dateTimePicker.Location = new Point(556, 346);
             dateTimePicker.Name = "dateTimePicker";
             dateTimePicker.Size = new Size(250, 27);
             dateTimePicker.TabIndex = 5;
@@ -98,9 +100,9 @@
             // btnAdd
             // 
             btnAdd.BackColor = SystemColors.ActiveCaption;
-            btnAdd.Location = new Point(169, 293);
+            btnAdd.Location = new Point(132, 475);
             btnAdd.Name = "btnAdd";
-            btnAdd.Size = new Size(165, 29);
+            btnAdd.Size = new Size(165, 31);
             btnAdd.TabIndex = 6;
             btnAdd.Text = "ADD PATIENT";
             btnAdd.UseVisualStyleBackColor = false;
@@ -109,7 +111,7 @@
             // AddPatientLabel
             // 
             AddPatientLabel.AutoSize = true;
-            AddPatientLabel.Location = new Point(356, 23);
+            AddPatientLabel.Location = new Point(476, 261);
             AddPatientLabel.Name = "AddPatientLabel";
             AddPatientLabel.Size = new Size(148, 20);
             AddPatientLabel.TabIndex = 7;
@@ -118,9 +120,9 @@
             // btnUpdate
             // 
             btnUpdate.BackColor = SystemColors.ActiveCaption;
-            btnUpdate.Location = new Point(351, 293);
+            btnUpdate.Location = new Point(323, 475);
             btnUpdate.Name = "btnUpdate";
-            btnUpdate.Size = new Size(165, 29);
+            btnUpdate.Size = new Size(165, 31);
             btnUpdate.TabIndex = 8;
             btnUpdate.Text = "Update Patient";
             btnUpdate.UseVisualStyleBackColor = false;
@@ -129,7 +131,7 @@
             // Search
             // 
             Search.BackColor = SystemColors.ActiveCaption;
-            Search.Location = new Point(911, 305);
+            Search.Location = new Point(888, 7);
             Search.Name = "Search";
             Search.Size = new Size(80, 29);
             Search.TabIndex = 9;
@@ -139,7 +141,7 @@
             // 
             // txtSearch
             // 
-            txtSearch.Location = new Point(673, 304);
+            txtSearch.Location = new Point(650, 7);
             txtSearch.Name = "txtSearch";
             txtSearch.Size = new Size(232, 27);
             txtSearch.TabIndex = 10;
@@ -147,7 +149,7 @@
             // SearchLabel
             // 
             SearchLabel.AutoSize = true;
-            SearchLabel.Location = new Point(563, 307);
+            SearchLabel.Location = new Point(540, 10);
             SearchLabel.Name = "SearchLabel";
             SearchLabel.Size = new Size(104, 20);
             SearchLabel.TabIndex = 11;
@@ -155,20 +157,44 @@
             // 
             // btnDelete
             // 
-            btnDelete.BackColor = SystemColors.ActiveCaption;
-            btnDelete.Location = new Point(607, 255);
+            btnDelete.BackColor = Color.Red;
+            btnDelete.Location = new Point(514, 474);
             btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(165, 29);
+            btnDelete.Size = new Size(165, 32);
             btnDelete.TabIndex = 12;
             btnDelete.Text = "Delete";
             btnDelete.UseVisualStyleBackColor = false;
             btnDelete.Click += btnDelete_Click;
             // 
+            // btnExportJson
+            // 
+            btnExportJson.BackColor = Color.FromArgb(255, 128, 0);
+            btnExportJson.Location = new Point(719, 474);
+            btnExportJson.Name = "btnExportJson";
+            btnExportJson.Size = new Size(211, 29);
+            btnExportJson.TabIndex = 13;
+            btnExportJson.Text = "Export to JSON\n\n";
+            btnExportJson.UseVisualStyleBackColor = false;
+            btnExportJson.Click += btnExportJson_Click;
+            // 
+            // btnImportJson
+            // 
+            btnImportJson.BackColor = Color.FromArgb(255, 128, 0);
+            btnImportJson.Location = new Point(946, 474);
+            btnImportJson.Name = "btnImportJson";
+            btnImportJson.Size = new Size(211, 29);
+            btnImportJson.TabIndex = 14;
+            btnImportJson.Text = "Import from JSON";
+            btnImportJson.UseVisualStyleBackColor = false;
+            btnImportJson.Click += btnImportJson_Click;
+            // 
             // HMSForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1378, 538);
+            ClientSize = new Size(1202, 538);
+            Controls.Add(btnImportJson);
+            Controls.Add(btnExportJson);
             Controls.Add(btnDelete);
             Controls.Add(SearchLabel);
             Controls.Add(txtSearch);
@@ -205,5 +231,7 @@
         private TextBox txtSearch;
         private Label SearchLabel;
         private Button btnDelete;
+        private Button btnExportJson;
+        private Button btnImportJson;
     }
 }
