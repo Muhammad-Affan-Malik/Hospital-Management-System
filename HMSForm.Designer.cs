@@ -37,6 +37,10 @@
             btnAdd = new Button();
             AddPatientLabel = new Label();
             btnUpdate = new Button();
+            Search = new Button();
+            txtSearch = new TextBox();
+            SearchLabel = new Label();
+            btnDelete = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -52,7 +56,7 @@
             // 
             // txtName
             // 
-            txtName.Location = new Point(65, 58);
+            txtName.Location = new Point(309, 55);
             txtName.Name = "txtName";
             txtName.Size = new Size(250, 27);
             txtName.TabIndex = 1;
@@ -60,7 +64,7 @@
             // 
             // txtAge
             // 
-            txtAge.Location = new Point(65, 102);
+            txtAge.Location = new Point(309, 99);
             txtAge.Name = "txtAge";
             txtAge.Size = new Size(250, 27);
             txtAge.TabIndex = 2;
@@ -71,14 +75,14 @@
             BoxGender.DropDownStyle = ComboBoxStyle.DropDownList;
             BoxGender.FormattingEnabled = true;
             BoxGender.Items.AddRange(new object[] { "Male", "Female", "Others" });
-            BoxGender.Location = new Point(65, 151);
+            BoxGender.Location = new Point(309, 148);
             BoxGender.Name = "BoxGender";
             BoxGender.Size = new Size(151, 28);
             BoxGender.TabIndex = 3;
             // 
             // txtDisease
             // 
-            txtDisease.Location = new Point(65, 196);
+            txtDisease.Location = new Point(309, 193);
             txtDisease.Name = "txtDisease";
             txtDisease.Size = new Size(250, 27);
             txtDisease.TabIndex = 4;
@@ -86,7 +90,7 @@
             // 
             // dateTimePicker
             // 
-            dateTimePicker.Location = new Point(65, 243);
+            dateTimePicker.Location = new Point(309, 240);
             dateTimePicker.Name = "dateTimePicker";
             dateTimePicker.Size = new Size(250, 27);
             dateTimePicker.TabIndex = 5;
@@ -94,9 +98,9 @@
             // btnAdd
             // 
             btnAdd.BackColor = SystemColors.ActiveCaption;
-            btnAdd.Location = new Point(65, 293);
+            btnAdd.Location = new Point(169, 293);
             btnAdd.Name = "btnAdd";
-            btnAdd.Size = new Size(250, 29);
+            btnAdd.Size = new Size(165, 29);
             btnAdd.TabIndex = 6;
             btnAdd.Text = "ADD PATIENT";
             btnAdd.UseVisualStyleBackColor = false;
@@ -105,7 +109,7 @@
             // AddPatientLabel
             // 
             AddPatientLabel.AutoSize = true;
-            AddPatientLabel.Location = new Point(112, 26);
+            AddPatientLabel.Location = new Point(356, 23);
             AddPatientLabel.Name = "AddPatientLabel";
             AddPatientLabel.Size = new Size(148, 20);
             AddPatientLabel.TabIndex = 7;
@@ -114,7 +118,7 @@
             // btnUpdate
             // 
             btnUpdate.BackColor = SystemColors.ActiveCaption;
-            btnUpdate.Location = new Point(340, 293);
+            btnUpdate.Location = new Point(351, 293);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(165, 29);
             btnUpdate.TabIndex = 8;
@@ -122,11 +126,53 @@
             btnUpdate.UseVisualStyleBackColor = false;
             btnUpdate.Click += btnUpdate_Click;
             // 
+            // Search
+            // 
+            Search.BackColor = SystemColors.ActiveCaption;
+            Search.Location = new Point(911, 305);
+            Search.Name = "Search";
+            Search.Size = new Size(80, 29);
+            Search.TabIndex = 9;
+            Search.Text = "Search";
+            Search.UseVisualStyleBackColor = false;
+            Search.Click += Search_Click;
+            // 
+            // txtSearch
+            // 
+            txtSearch.Location = new Point(673, 304);
+            txtSearch.Name = "txtSearch";
+            txtSearch.Size = new Size(232, 27);
+            txtSearch.TabIndex = 10;
+            // 
+            // SearchLabel
+            // 
+            SearchLabel.AutoSize = true;
+            SearchLabel.Location = new Point(563, 307);
+            SearchLabel.Name = "SearchLabel";
+            SearchLabel.Size = new Size(104, 20);
+            SearchLabel.TabIndex = 11;
+            SearchLabel.Text = "Search Record";
+            // 
+            // btnDelete
+            // 
+            btnDelete.BackColor = SystemColors.ActiveCaption;
+            btnDelete.Location = new Point(607, 255);
+            btnDelete.Name = "btnDelete";
+            btnDelete.Size = new Size(165, 29);
+            btnDelete.TabIndex = 12;
+            btnDelete.Text = "Delete";
+            btnDelete.UseVisualStyleBackColor = false;
+            btnDelete.Click += btnDelete_Click;
+            // 
             // HMSForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1378, 538);
+            Controls.Add(btnDelete);
+            Controls.Add(SearchLabel);
+            Controls.Add(txtSearch);
+            Controls.Add(Search);
             Controls.Add(btnUpdate);
             Controls.Add(AddPatientLabel);
             Controls.Add(btnAdd);
@@ -155,5 +201,9 @@
         private Button btnAdd;
         private Label AddPatientLabel;
         private Button btnUpdate;
+        private Button Search;
+        private TextBox txtSearch;
+        private Label SearchLabel;
+        private Button btnDelete;
     }
 }

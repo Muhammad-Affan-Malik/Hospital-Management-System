@@ -109,5 +109,57 @@ namespace PracticeProject1
                 LoadPatientsIntoGrid();
             }
         }
+
+        private void Search_Click(object sender, EventArgs e)
+        {
+            string searchTerm = txtSearch.Text.Trim().ToLower();
+
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                MessageBox.Show("Please enter a search term.");
+                return;
+            }
+
+            var results = _context.Patients
+                .Where(p =>
+                    p.Name.ToLower().Contains(searchTerm) ||
+                    p.Disease.ToLower().Contains(searchTerm))
+                .ToList();
+
+            if (results.Count == 0)
+            {
+                MessageBox.Show("No matching patients found.");
+            }
+
+            dataGridView1.DataSource = results;
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please select a patient to delete.");
+                return;
+            }
+
+            var confirm = MessageBox.Show("Are you sure you want to delete the selected patient?", "Confirm Deletion", MessageBoxButtons.YesNo);
+            if (confirm != DialogResult.Yes)
+                return;
+
+            int selectedPatientId = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells["PatientId"].Value);
+            var patientToDelete = _context.Patients.FirstOrDefault(p => p.PatientId == selectedPatientId);
+
+            if (patientToDelete != null)
+            {
+                _context.Patients.Remove(patientToDelete);
+                _context.SaveChanges();
+                MessageBox.Show("Patient deleted successfully.");
+                LoadPatientsIntoGrid(); // Refresh the grid
+            }
+            else
+            {
+                MessageBox.Show("Selected patient not found in database.");
+            }
+        }
     }
 }
