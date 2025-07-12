@@ -36,6 +36,7 @@
             dateTimePicker = new DateTimePicker();
             btnAdd = new Button();
             AddPatientLabel = new Label();
+            btnUpdate = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -47,6 +48,7 @@
             dataGridView1.RowHeadersWidth = 51;
             dataGridView1.Size = new Size(721, 188);
             dataGridView1.TabIndex = 0;
+            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             // 
             // txtName
             // 
@@ -109,11 +111,23 @@
             AddPatientLabel.TabIndex = 7;
             AddPatientLabel.Text = "ADD PATIENT'S INFO";
             // 
+            // btnUpdate
+            // 
+            btnUpdate.BackColor = SystemColors.ActiveCaption;
+            btnUpdate.Location = new Point(340, 293);
+            btnUpdate.Name = "btnUpdate";
+            btnUpdate.Size = new Size(165, 29);
+            btnUpdate.TabIndex = 8;
+            btnUpdate.Text = "Update Patient";
+            btnUpdate.UseVisualStyleBackColor = false;
+            btnUpdate.Click += btnUpdate_Click;
+            // 
             // HMSForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1378, 538);
+            Controls.Add(btnUpdate);
             Controls.Add(AddPatientLabel);
             Controls.Add(btnAdd);
             Controls.Add(dateTimePicker);
@@ -140,5 +154,6 @@
         private DateTimePicker dateTimePicker;
         private Button btnAdd;
         private Label AddPatientLabel;
+        private Button btnUpdate;
     }
 }

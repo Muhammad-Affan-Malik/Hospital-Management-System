@@ -17,6 +17,9 @@ namespace PracticeProject1
     {
 
         private readonly HospitalContext _context;
+
+        private int selectedPatientId = -1;
+
         public HMSForm()
         {
             InitializeComponent();
@@ -67,6 +70,44 @@ namespace PracticeProject1
             }
         }
 
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0) // Ignore header row
+            {
+                DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
 
+                selectedPatientId = Convert.ToInt32(row.Cells["PatientId"].Value); // Ensure PatientId column exists
+
+                txtName.Text = row.Cells["Name"].Value.ToString();
+                txtAge.Text = row.Cells["Age"].Value.ToString();
+                BoxGender.Text = row.Cells["Gender"].Value.ToString();
+                txtDisease.Text = row.Cells["Disease"].Value.ToString();
+                dateTimePicker.Value = Convert.ToDateTime(row.Cells["AdmissionDate"].Value);
+            }
+        }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            if (selectedPatientId == -1)
+            {
+                MessageBox.Show("Please select a patient to update.");
+                return;
+            }
+
+            var patient = _context.Patients.Find(selectedPatientId);
+            if (patient != null)
+            {
+                patient.Name = txtName.Text;
+                patient.Age = int.Parse(txtAge.Text);
+                patient.Gender = BoxGender.Text;
+                patient.Disease = txtDisease.Text;
+                patient.AdmissionDate = dateTimePicker.Value;
+
+                _context.SaveChanges();
+
+                MessageBox.Show("✅ Patient updated successfully!");
+                LoadPatientsIntoGrid();
+            }
+        }
     }
 }
