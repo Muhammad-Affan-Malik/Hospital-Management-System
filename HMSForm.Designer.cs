@@ -43,6 +43,7 @@
             btnDelete = new Button();
             btnExportJson = new Button();
             btnImportJson = new Button();
+            btnClose = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -100,7 +101,7 @@
             // btnAdd
             // 
             btnAdd.BackColor = SystemColors.ActiveCaption;
-            btnAdd.Location = new Point(132, 475);
+            btnAdd.Location = new Point(77, 480);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(165, 31);
             btnAdd.TabIndex = 6;
@@ -120,7 +121,7 @@
             // btnUpdate
             // 
             btnUpdate.BackColor = SystemColors.ActiveCaption;
-            btnUpdate.Location = new Point(323, 475);
+            btnUpdate.Location = new Point(268, 480);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.Size = new Size(165, 31);
             btnUpdate.TabIndex = 8;
@@ -158,7 +159,7 @@
             // btnDelete
             // 
             btnDelete.BackColor = Color.Red;
-            btnDelete.Location = new Point(514, 474);
+            btnDelete.Location = new Point(459, 479);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(165, 32);
             btnDelete.TabIndex = 12;
@@ -169,7 +170,7 @@
             // btnExportJson
             // 
             btnExportJson.BackColor = Color.FromArgb(255, 128, 0);
-            btnExportJson.Location = new Point(719, 474);
+            btnExportJson.Location = new Point(664, 479);
             btnExportJson.Name = "btnExportJson";
             btnExportJson.Size = new Size(211, 29);
             btnExportJson.TabIndex = 13;
@@ -180,7 +181,7 @@
             // btnImportJson
             // 
             btnImportJson.BackColor = Color.FromArgb(255, 128, 0);
-            btnImportJson.Location = new Point(946, 474);
+            btnImportJson.Location = new Point(891, 479);
             btnImportJson.Name = "btnImportJson";
             btnImportJson.Size = new Size(211, 29);
             btnImportJson.TabIndex = 14;
@@ -188,11 +189,23 @@
             btnImportJson.UseVisualStyleBackColor = false;
             btnImportJson.Click += btnImportJson_Click;
             // 
+            // btnClose
+            // 
+            btnClose.BackColor = Color.Red;
+            btnClose.Location = new Point(1078, 23);
+            btnClose.Name = "btnClose";
+            btnClose.Size = new Size(94, 29);
+            btnClose.TabIndex = 15;
+            btnClose.Text = "Logout";
+            btnClose.UseVisualStyleBackColor = false;
+            btnClose.Click += btnClose_Click;
+            // 
             // HMSForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1202, 538);
+            Controls.Add(btnClose);
             Controls.Add(btnImportJson);
             Controls.Add(btnExportJson);
             Controls.Add(btnDelete);
@@ -233,5 +246,6 @@
         private Button btnDelete;
         private Button btnExportJson;
         private Button btnImportJson;
+        private Button btnClose;
     }
 }
