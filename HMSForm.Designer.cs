@@ -35,16 +35,14 @@
             txtDisease = new TextBox();
             dateTimePicker = new DateTimePicker();
             btnAdd = new Button();
-            
-
-            this.Controls.AddRange(new Control[] { dataGridView1, txtName, txtAge, BoxGender, txtDisease, dateTimePicker, btnAdd });
+            AddPatientLabel = new Label();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
             // dataGridView1
             // 
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(354, 322);
+            dataGridView1.Location = new Point(270, 338);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
             dataGridView1.Size = new Size(721, 188);
@@ -52,7 +50,7 @@
             // 
             // txtName
             // 
-            txtName.Location = new Point(595, 42);
+            txtName.Location = new Point(65, 58);
             txtName.Name = "txtName";
             txtName.Size = new Size(250, 27);
             txtName.TabIndex = 1;
@@ -60,7 +58,7 @@
             // 
             // txtAge
             // 
-            txtAge.Location = new Point(595, 86);
+            txtAge.Location = new Point(65, 102);
             txtAge.Name = "txtAge";
             txtAge.Size = new Size(250, 27);
             txtAge.TabIndex = 2;
@@ -71,14 +69,14 @@
             BoxGender.DropDownStyle = ComboBoxStyle.DropDownList;
             BoxGender.FormattingEnabled = true;
             BoxGender.Items.AddRange(new object[] { "Male", "Female", "Others" });
-            BoxGender.Location = new Point(595, 135);
+            BoxGender.Location = new Point(65, 151);
             BoxGender.Name = "BoxGender";
             BoxGender.Size = new Size(151, 28);
             BoxGender.TabIndex = 3;
             // 
             // txtDisease
             // 
-            txtDisease.Location = new Point(595, 180);
+            txtDisease.Location = new Point(65, 196);
             txtDisease.Name = "txtDisease";
             txtDisease.Size = new Size(250, 27);
             txtDisease.TabIndex = 4;
@@ -86,7 +84,7 @@
             // 
             // dateTimePicker
             // 
-            dateTimePicker.Location = new Point(595, 227);
+            dateTimePicker.Location = new Point(65, 243);
             dateTimePicker.Name = "dateTimePicker";
             dateTimePicker.Size = new Size(250, 27);
             dateTimePicker.TabIndex = 5;
@@ -94,7 +92,7 @@
             // btnAdd
             // 
             btnAdd.BackColor = SystemColors.ActiveCaption;
-            btnAdd.Location = new Point(595, 277);
+            btnAdd.Location = new Point(65, 293);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(250, 29);
             btnAdd.TabIndex = 6;
@@ -102,11 +100,21 @@
             btnAdd.UseVisualStyleBackColor = false;
             btnAdd.Click += btnAdd_Click;
             // 
+            // AddPatientLabel
+            // 
+            AddPatientLabel.AutoSize = true;
+            AddPatientLabel.Location = new Point(112, 26);
+            AddPatientLabel.Name = "AddPatientLabel";
+            AddPatientLabel.Size = new Size(148, 20);
+            AddPatientLabel.TabIndex = 7;
+            AddPatientLabel.Text = "ADD PATIENT'S INFO";
+            // 
             // HMSForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1378, 538);
+            Controls.Add(AddPatientLabel);
             Controls.Add(btnAdd);
             Controls.Add(dateTimePicker);
             Controls.Add(txtDisease);
@@ -131,5 +139,6 @@
         private TextBox txtDisease;
         private DateTimePicker dateTimePicker;
         private Button btnAdd;
+        private Label AddPatientLabel;
     }
 }
